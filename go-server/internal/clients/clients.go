@@ -3,16 +3,15 @@ package clients
 import "github.com/google/uuid"
 
 type Clients struct {
-	ClientId uuid.UUID
-	message string
-	HubId string
+	ClientId uuid.UUID `json:"clientId"`
+	ClientMessage  chan string    `json:"clientMessage"`
+	HubId    string    `json:"hubId"`
 }
 
-func (c *Clients) CreateClient() (*Clients,error) {
+func (c *Clients) CreateClient() (*Clients, error) {
 	return &Clients{
 		ClientId: uuid.New(),
-		message: "",
-		HubId : "",
+		ClientMessage: make(chan string),
+		HubId:    "",
 	}, nil
 }
-
