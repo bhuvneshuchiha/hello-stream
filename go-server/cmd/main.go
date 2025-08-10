@@ -1,6 +1,7 @@
 package main
 
 import (
+	"github.com/bhuvneshuchiha/hello-stream/internal/chat"
 	"github.com/bhuvneshuchiha/hello-stream/internal/routes"
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
@@ -14,6 +15,7 @@ func main() {
 	e.Use(middleware.Recover())
 
 	e.GET("/", routes.RootCall)
+	e.GET("/ws", chat.ConnectToClient)
 
 	e.Logger.Fatal(e.Start(":8080"))
 }
