@@ -21,29 +21,31 @@ func ConnectToClient(c echo.Context) error {
 	if err != nil {
 		return err
 	}
-	defer conn.Close()
-	message := []byte("Akshually i am going to be pro at golang")
-	WriteMessageToConnection(conn, message)
+	ReadMessageFromConnections(conn)
 	return nil
 }
 
-func WriteMessageToConnection(conn *websocket.Conn, message []byte) error {
-	err := conn.WriteMessage(websocket.TextMessage, message)
+func WriteMessageToConnection(conn *websocket.Conn, messageType int ,message []byte) error {
+	err := conn.WriteMessage(messageType, message)
 	if err != nil {
-		fmt.Println("error encountered",err)
+		fmt.Println("error encountered", err)
 	}
 	return nil
 }
 
+func ReadMessageFromConnections(conn *websocket.Conn) error {
+	for {
+		msgType, msg, err := conn.ReadMessage()
+		if err != nil {
+			fmt.Println("Caught error while reading the message", err)
+			return err
+		}
 
+		err = WriteMessageToConnection(conn, msgType, msg)
+		if err != nil {
+			fmt.Println("error found", err)
+			return err
+		}
+	}
 
-
-
-
-
-
-
-
-
-
-
+}
